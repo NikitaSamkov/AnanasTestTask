@@ -19,7 +19,7 @@ class MessageController extends Controller
     }
 
     public function GetMessages() {
-        $messages = Message::orderBy("created_at", "desc")->get();
+        $messages = $this->service->GetMessages();
         return MessageResource::collection($messages);
     }
 
