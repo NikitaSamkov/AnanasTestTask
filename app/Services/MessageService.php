@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Message;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 
 class MessageService
@@ -24,6 +25,12 @@ class MessageService
         $user = Auth::user();
         $message = Message::whereId($id);
         if (!$message->exists() || $message->first()->user_id != $user->id) {
+            return false;
+        }
+        $now = new DateTime();
+        $date = (int) $message->first()->created_at->timestamp;
+        $diff = round(($now->getTimestamp() - $date) / (60 * 60));
+        if ($diff > 24) {
             return false;
         }
         $message->delete();
