@@ -23,5 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, "Register"]);
 Route::post('/login', [AuthController::class, "Login"])->name("login");
 
-Route::middleware("auth:sanctum")->post('/messages/upload', [MessageController::class, "UploadMessage"]);
-Route::get("/messages", [MessageController::class, "GetMessages"]);
+Route::prefix("/messages")->group(function () {
+    Route::middleware("auth:sanctum")->post('/upload', [MessageController::class, "UploadMessage"]);
+    Route::middleware("auth:sanctum")->post('/delete', [MessageController::class, "DeleteMessage"]);
+    Route::get("", [MessageController::class, "GetMessages"]);
+});
+

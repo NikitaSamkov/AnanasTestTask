@@ -37,4 +37,19 @@ class MessageController extends Controller
         }
         return response(status: 422);
     }
+
+    public function DeleteMessage(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response(status: 400);
+        }
+
+        if ($this->service->Delete((int) $request['id'])) {
+            return response(status: 200);
+        }
+        return response(status: 403);
+    }
 }
