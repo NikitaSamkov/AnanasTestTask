@@ -24,3 +24,4 @@ Route::post('/register', [AuthController::class, "Register"]);
 Route::post('/login', [AuthController::class, "Login"])->name("login");
 
 Route::middleware("auth:sanctum")->post('/messages/upload', [MessageController::class, "UploadMessage"]);
+Route::get("/messages", [MessageController::class, "GetMessages"]);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MessageResource;
+use App\Models\Message;
 use App\Services\MessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,11 @@ class MessageController extends Controller
     public function __construct(MessageService $authService)
     {
         $this->service = $authService;
+    }
+
+    public function GetMessages() {
+        $messages = Message::orderBy("created_at", "desc")->get();
+        return MessageResource::collection($messages);
     }
 
     public function UploadMessage(Request $request) {
