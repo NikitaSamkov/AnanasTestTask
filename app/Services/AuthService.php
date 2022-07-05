@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
@@ -19,5 +20,16 @@ class AuthService
         ]);
 
         return true;
+    }
+
+    public function Authenticate(string $email, string $password) {
+        $user = User::whereEmail($email);
+        if (!$user->exists() || !Auth::attempt(['email' => $email, 'password' => $password])) {
+            return null;
+        }
+
+        $user = Auth::user();
+
+        return $user->createToken('token')->plainTextToken;
     }
 }

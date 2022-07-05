@@ -31,4 +31,19 @@ class AuthController extends Controller
         }
         return response(status: 422);
     }
+
+    public function Login(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string']
+        ]);
+
+        if ($validator->fails()) {
+            return response(status: 400);
+        }
+
+        $token = $this->service->Authenticate($request['email'], $request['password']);
+
+        return $token ? response(['token' => $token]) : response(status: 401);
+    }
 }
